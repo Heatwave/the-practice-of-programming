@@ -54,7 +54,7 @@ _The Practice of Programming_ by Brian W. Kernighan and Rob Pike
 
 1. Sequential search. Also known as linear search.
 1. Binary search. For a larger sorted array.
-1. [2.1.binary-search.c]()
+1. [2.1.binary-search.c](2.1.binary-search.c)
 
 ### 2.2 Sorting
 
@@ -69,20 +69,20 @@ _The Practice of Programming_ by Brian W. Kernighan and Rob Pike
     ```
 
 1. Average time complexity: O(n㏒n)
-1. [2.2.quick-sort.c]()
+1. [2.2.quick-sort.c](2.2.quick-sort.c)
 
 ### 2.3 Libraries
 
 1. ANSI C library:
-    1. qsort: [2.3.libraries-qsort.c]()
-    1. bsearch: [2.3.libraries-bsearch.c]()
+    1. qsort: [2.3.libraries-qsort.c](2.3.libraries-qsort.c)
+    1. bsearch: [2.3.libraries-bsearch.c](2.3.libraries-bsearch.c)
 1. It's a good idea to use "bsearch" instead of writing your own.
 1. Over the years, binary search has proven surprisingly hard for programmers to get right.
-1. [Exercise-2-1.quicksort-iteratively.c]()
+1. [Exercise-2-1.quicksort-iteratively.c](Exercise-2-1.quicksort-iteratively.c)
 
 ### 2.4 A Java Quicksort
 
-1. [Quicksort.java]()
+1. [Quicksort.java](java/src/org/the/practice/of/programming/quicksort/Quicksort.java)
 
 ### 2.5 O-Notation
 
@@ -96,17 +96,17 @@ O(n²) | quadratic | simple sorting methods
 O(n³) | cubic | matrix multiplication
 O(2^n) | exponential | set partitioning
 
-1. [Exercise-2-3.quicksort-experiment.c]()
-1. [Exercise-2-4.slowsort.c]()
+1. [Exercise-2-3.quicksort-experiment.c](Exercise-2-3.quicksort-experiment.c)
+1. [Exercise-2-4.slowsort.c](Exercise-2-4.slowsort.c)
 
 ### 2.6 Growing Arrays
 
-1. [2.6.growing-arrays.c]()
+1. [2.6.growing-arrays.c](2.6.growing-arrays.c)
 
 ### 2.7 Lists
 
-1. [2.7.lists.c]()
-1. [Exercise-2-9.generic-list.c]()
+1. [2.7.lists.c](2.7.lists.c)
+1. [Exercise-2-9.generic-list.c](Exercise-2-9.generic-list.c)
 
 ### 2.8 Trees
 
@@ -114,12 +114,12 @@ O(2^n) | exponential | set partitioning
 1. A tree in which each path from the root to the leaf has approximately the same length is called _balanced_. The advantage of a balanced tree is that searching it for an item is an O(logn) process, since, as in binary search, the number of possibilities is halved at each step.
 1. Realistically, binary search trees are infrequently used, though B-trees, which have very high branching, are used to maintain information on secondary storage.
 1. parse tree.
-1. [2.8.trees.c]()
+1. [2.8.trees.c](2.8.trees.c)
 
 ### 2.9 Hash Tables
 
 1. Empirically, the values 31 and 37 have proven to be good choices for the multiplier in a hash function for ASCII strings.
-1. [2.9.hash-tables.c]()
+1. [2.9.hash-tables.c](2.9.hash-tables.c)
 
 ### 2.10 Summary
 
@@ -163,12 +163,12 @@ O(2^n) | exponential | set partitioning
 
 ### 3.3 Building the Data Structure in C
 
-1. [3.3.markov-chain.c]()
+1. [3.3.markov-chain.c](3.3.markov-chain.c)
 
 ### 3.4 Generating Output
 
-1. [Exercise-3-3.markov-chain-second-hash-table.c]()
-1. [Exercise-3-4.markov-chain-without-sentinel.c]()
+1. [Exercise-3-3.markov-chain-second-hash-table.c](Exercise-3-3.markov-chain-second-hash-table.c)
+1. [Exercise-3-4.markov-chain-without-sentinel.c](Exercise-3-4.markov-chain-without-sentinel.c)
 
 ### 3.5 Java
 
@@ -191,15 +191,15 @@ O(2^n) | exponential | set partitioning
 1. push_back    push_front
 1. The C++ version seems especially clear and elegant-the code is compact, the data structure is visible and the algorithm is completely transparent.
 1. Sadly, there is a price to pay: this version runs much slower than the original C version, though it is not the slowest.
-1. [markov-chain.cpp]()
+1. [markov-chain.cpp](cpp/markov-chain.cpp)
 
 ### 3.7 Awk and Perl
 
 1. Both the Perl and Awk programs are short compared to the three earlier versions, but they are harder to adapt to handle prefixes that are not exactly two words.
 1. The core of the C++ STL implementation (the _add_ and _generate_ functions) is of comparable length and seems clearer.
 1. Nevertheless, scripting languages are often a good choice for experimental programming, for making prototypes, and even for production use if run-time is not a major issue.
-1. [markov.awk]()
-1. [markov.pl]()
+1. [markov.awk](awk/markov.awk)
+1. [markov.pl](perl/markov.pl)
 
 ### 3.8 Performance
 
@@ -275,6 +275,9 @@ O(2^n) | exponential | set partitioning
 1. The internal variables that store text and the internal functions like _split_ are declared _static_ so they are visible only within the file that contains them. This is the simplest way to hide information in a C program.
 
 ### 4.4 A C++ Implementation
+
+1. [csv.cpp](cpp/csv.cpp)
+1. [Exercise-4-5.csv-operator-overload.cpp](cpp/Exercise-4-5.csv-operator-overload.cpp)
 
 ### 4.5  Interface Principles
 
