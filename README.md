@@ -279,10 +279,74 @@ O(2^n) | exponential | set partitioning
 1. [csv.cpp](cpp/csv.cpp)
 1. [Exercise-4-5.csv-operator-overload.cpp](cpp/Exercise-4-5.csv-operator-overload.cpp)
 
-### 4.5  Interface Principles
+### 4.5 Interface Principles
+
+1. To prosper, an interface must be well suited for its task - simple, general, regular, predictable, robust - and it must adapt gracefully as its users and its implementation change.
+1. Good interfaces follow a set of principles:
+    1. Hide implementation details
+        1. There are several terms for this kind of organizing principle; information hiding, encapsulation, abstraction, modularization, and the like all refer to related ideas.
+        1. If the header file does not include the actual structure declaration, just the name of the structure, this is sometimes called an **opaque type**, since its properties are not visible and all operations take place through a pointer to whatever real object lurks behind.
+        1. Avoid global variables; wherever possible it is better to pass references to all data through function arguments.
+        1. We strongly recommend against publicly visible data in all forms;
+        1. The predefined I/O streams like _stdin_ and _stdout_ are almost always defined as elements of a global array of **FILE** structures:
+            ```C
+            extern FILE     __iob[_NFILE];
+            #define stdin   (&__iob[0])
+            #define stdout  (&__iob[1])
+            #define stderr  (&__iob[2])
+            ```
+        1. This makes the implementation completely visible; it also means that one can't assign to _stdin_, _stdout_ or _stderr, even though they look like variables.
+        1. The peculiar name __iob uses the ANSI C convention of two leading underscores for private names that must be visible, which makes the names less likely to conflict with names in a program.
+    1. Choose a small orthogonal set of primitives
+        1. Having lots of functions may make the library easier to use - whatever one needs is there for the taking. But a large interface is harder to write and maintain, and sheer size may make it hard to learn and use as well.
+        1. In the interest of convenience, some interfaces provide multiple ways of doing the same thing, a tendency that should be resisted.
+        1. Narrow interfaces are to be preferred to wide ones, at least until one has strong evidence that more functions are needed.
+        1. Do one thing, and do it well.
+        1. For instance, rather than having _memcpy_ for speed and _memmove_ for safety, it would be better to have one function that was always safe, and fast when it could be.
+    1. Don't reach behind the user's back
+        1. A library function should not write secret files and variables or change global data, and it should be circumspect about modifying data in its caller.
+    1. Do the same thing the same way everywhere
 
 ### 4.6 Resource management
 
+1. Free a resource in the same layer that allocated it
+    1. One way to control resource allocation and reclamation is to have the same library, package, or interface that allocates a resource be responsible for freeing it.
+    1. C++ constructors and destructors
+    1. Java _garbage collection_
+    1. The existence of automatic garbage collection does **not** mean that there are no memory-management issues in a design.
+    1. We still have to determine whether interfaces return references to shared objects or copies of them, nad this affects the entire program.
+    1. Nor is garbage collection free - there is overhead to maintain information and to reclaim unused memory, and collection may happen at unpredictable times.
+1. To avoid the multi-threaded resource management problems, it is necessary to write code that is _reentrant_, which means that it works regardless of the number of simultaneous executions.
+    1. Reentrant code will avoid global variables, static local variables, and any other variable that could be modified while another thread is using it.
+    1. Libraries that inadvertently expose variables to sharing destroy the model.
+    1. If variables might be shared, they must be protected by some kind of locking mechanism to ensure that only one thread at at time accesses them.
+    1. Synchronized methods in Java.
+
 ### 4.7 Abort, Retry, Fail?
 
+1. Detect errors at a low level, handle them at a high level
+    1. In most cases, the caller should determine how to handle an error, not the callee. Library routines can help in this by failing gracefully.
+1. Use exceptions only for exceptional situations
+    1. Exceptions should not be used for handling expected return values. Reading from a file will eventually produce an end of file; this should be handled with a return value, not by an exception.
+    1. Exceptions are often overused, because they distort the flow of control, they can lead to convoluted constructions that are prone to bugs.
+    1. Exceptions are best reserved for truly unexpected events, such as file systems filling up or floating-point errors.
+
 ### 4.8 User Interfaces
+
+1. A diagnostic should not say:
+    ```text
+    estrdup failed
+    ```
+1. when it could say:
+    ```text
+    markov: estrdup("Derrida") failed: Memory limit reached
+    ```
+1. Programs should display information about proper usage when an error is made, as shown in functions like:
+    ```c
+    /* usage: print usage message and exit */
+    void usage(void)
+    {
+        fprintf(stderr, "usage: %s [-d] [-n nwords] [-s seed] [files ...]\n", progname());
+        exit(2);
+    }
+    ```
