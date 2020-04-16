@@ -326,6 +326,7 @@ O(2^n) | exponential | set partitioning
 
 1. Detect errors at a low level, handle them at a high level
     1. In most cases, the caller should determine how to handle an error, not the callee. Library routines can help in this by failing gracefully.
+    1. That reasoning led us to return NULL for a non-existent field rather than aborting. Similarly, _csvgetline_ returns NULL no matter how many times it is called after the first end of file.
 1. Use exceptions only for exceptional situations
     1. Exceptions should not be used for handling expected return values. Reading from a file will eventually produce an end of file; this should be handled with a return value, not by an exception.
     1. Exceptions are often overused, because they distort the flow of control, they can lead to convoluted constructions that are prone to bugs.
