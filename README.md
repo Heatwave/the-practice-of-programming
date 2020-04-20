@@ -351,3 +351,45 @@ O(2^n) | exponential | set partitioning
         exit(2);
     }
     ```
+
+## Chapter 5: Debugging
+
+1. Why should software be so hard?
+    1. One reason is the the complexity of a program is related to the number of ways that its components can interact, and software is full of components and interactions.
+1. A major force in the evolution of programming languages has been the attempt to prevent bugs through language features.
+1. Programmers should know the potentially risky bits of their languages and take extra care when using them. They should also enable all compiler checks and heed the warnings.
+1. Each language feature that prevents some problem has a cost of its own. If a higher-level language makes the simple bugs disappear automatically, the price is that it makes it easier to create higher-level bugs.
+
+### 5.1 Debuggers
+
+### 5.2 Good Clues, Easy Bugs
+
+1. Look for familiar patterns
+    1. Uninitialized variables usually give a garbage values. Memory returned by allocators like _malloc_, _realloc_, and _new_ is likely to be garbage too; be sure to initialize it.
+1. Examine the most recent change
+1. Don't make the same mistake twice
+    1. Even when code is so simple you could write it in your sleep, don't fall asleep while writing it.
+1. Debug it now, not later
+1. Get a stack trace
+1. Read before typing
+    1. Resist the urge to start typing; thinking is a worthwhile alternative.
+1. Explain your code to someone else
+
+### 5.3 No Clues, Hard Bugs
+
+1. Make the bug reproducible
+1. Divide and conquer
+    1. Proceed by binary search. Throw away half the input or the code to identify which parts have the bug.
+1. Study the numerology of failures
+1. Display output to localize your search
+1. Write self-checking code
+1. Write a log file
+1. Draw a picture
+1. Use tools
+1. Keep records
+
+### 5.4 Last Resorts
+
+1. debugger
+
+### 5.5 Non-reproducible Bugs
