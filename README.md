@@ -393,3 +393,8 @@ O(2^n) | exponential | set partitioning
 1. debugger
 
 ### 5.5 Non-reproducible Bugs
+
+1. Check whether all variables have been initialized. Local variables of functions and memory obtained from allocators are the most likely culprits in C and C++
+1. If the bug changes behavior or even disappears when debugging code is added, it may be a memory allocation error
+1. Returning the address of a local variable is a recipe for delayed disaster
+1. You can write your own allocator that does some of its own consistency checking or logs all calls for separate analysis. An allocator that doesn't have to run fast is easy to write, so this strategy is feasible when the situation is dire.
