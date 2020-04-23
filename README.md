@@ -398,3 +398,16 @@ O(2^n) | exponential | set partitioning
 1. If the bug changes behavior or even disappears when debugging code is added, it may be a memory allocation error
 1. Returning the address of a local variable is a recipe for delayed disaster
 1. You can write your own allocator that does some of its own consistency checking or logs all calls for separate analysis. An allocator that doesn't have to run fast is easy to write, so this strategy is feasible when the situation is dire.
+
+### 5.6 Debugging Tools
+
+1. [strings.c](strings.c)
+1. [Exercise-5-2.strings-length-option](Exercise-5-2.strings-length-option.c)
+1. [vis](vis.c)
+
+### 5.7 Other People's Bugs
+
+1. Before debugging others' code, you must first acquire some understanding of how the program is organized and how the original programmers thought and wrote.
+1. Helpful tools: Text-search, Graph of function calls, Revision history and Debugger
+
+### 5.8 Summary

@@ -5,19 +5,14 @@
 
 #include "eprintf.h"
 
-#define MINLEN 100
-
-static char *name = NULL; // program name ofr messages
-
-/* setprogname: set stored name of program */
-void setprogname(char *str)
-{
-    name = strdup(str);
-}
+#define DEFAULT_MINLEN 4
 
 /* strings: extract printable strings from stream */
-void strings(char *name, FILE *fin)
+void strings(char *name, FILE *fin, int minLen)
 {
+    if (minLen < 0)
+        minLen = DEFAULT_MINLEN;
+
     int c, i;
     char buf[BUFSIZ];
 
@@ -31,7 +26,7 @@ void strings(char *name, FILE *fin)
             if (i >= BUFSIZ)
                 break;
         }
-        if (i >= MINLEN) /* print if long enough */
+        if (i >= minLen) /* print if long enough */
             printf("%s:%.*s\n", name, i, buf);
     } while (c != EOF);
 }
@@ -43,16 +38,24 @@ int main(int argc, char *argv[])
     FILE *fin;
     setprogname("strings");
     if (argc == 1)
-        eprintf("usage: strings filenames");
+        eprintf("usage: strings [-l (min length)] filenames");
     else
     {
-        for (i = 1; i < argc; i++)
+        int minLen = -1;
+        i = 1;
+        if (strcmp(argv[i], "-l") == 0)
+        {
+            ++i;
+            minLen = atoi(argv[i]);
+            ++i;
+        }
+        for (; i < argc; i++)
         {
             if ((fin = fopen(argv[i], "rb")) == NULL)
                 weprintf("can't open %s:", argv[i]);
             else
             {
-                strings(argv[i], fin);
+                strings(argv[i], fin, minLen);
                 fclose(fin);
             }
         }
