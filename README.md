@@ -411,3 +411,18 @@ O(2^n) | exponential | set partitioning
 1. Helpful tools: Text-search, Graph of function calls, Revision history and Debugger
 
 ### 5.8 Summary
+
+## Chapter 6: Testing
+
+1. One way to write bug-free code is to generate it by a program. A common case occurs when a program can be generated from a specification in some specialized language
+
+### 6.1 Test as You Write the Code
+
+1. Test code at its boundaries - boundary condition testing
+1. Test pre- and post-conditions
+    1. Making sure that input values are within range is a common example of testing a pre-condition
+1. Use assertions
+    1. Assertions are particularly helpful for validating properties of interfaces because they draw attention to inconsistencies between caller and callee and my even indicate who's at fault
+1. Program defensively
+    1. _defensive programming_ is a useful technique to make sure that a program protects itself against incorrect use or illegal data
+1. Check error returns
