@@ -426,3 +426,19 @@ O(2^n) | exponential | set partitioning
 1. Program defensively
     1. _defensive programming_ is a useful technique to make sure that a program protects itself against incorrect use or illegal data
 1. Check error returns
+
+### 6.2 Systematic Testing
+
+1. Test incrementally
+    1. Write part of a program, test it, add some more code, test that, and so on.
+1. Test simple parts first
+    1. Test should focus first on the simplest and most commonly executed features of a program
+1. Know what output to expect
+    1. To test a numerical program, generate test cases that explore the edges of the algorithm, trivial cases as well as hard ones.
+    1. If the program has an inverse, check that its application recovers the input. Encryption and decryption are inverse.
+1. Verify conservation properties
+1. Compare independent implementations
+    1. Independent implementations of a library or program should produce the same answers
+    1. Sometimes an answer can be computed in two different ways, or you might be able to write a trivial version of a program to use as a slow but independent comparison
+    1. If two unrelated programs get the same answers, there is a good chance that they are correct; if not, at least one is wrong
+1. Measure test coverage
