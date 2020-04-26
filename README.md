@@ -442,3 +442,17 @@ O(2^n) | exponential | set partitioning
     1. Sometimes an answer can be computed in two different ways, or you might be able to write a trivial version of a program to use as a slow but independent comparison
     1. If two unrelated programs get the same answers, there is a good chance that they are correct; if not, at least one is wrong
 1. Measure test coverage
+1. [freq](freq.c)
+1. [Exercise 6.2](freq-numbers.c)
+
+### 6.3 Test Automation
+
+1. Automate regression testing
+    1. If an erroneous answer ever sneaks into a regression tet, it's very hard to detect and everything depends on it will be wrong thereafter
+    1. It's good practice to check the regression test itself periodically to make sure it is still valid
+    1. [test-ka](test-ka.sh)
+1. Create self-contained tests
+
+### 6.4 Test Scaffolds
+
+1. [memset-test](memset-test.c)
