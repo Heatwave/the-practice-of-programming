@@ -456,3 +456,12 @@ O(2^n) | exponential | set partitioning
 ### 6.4 Test Scaffolds
 
 1. [memset-test](memset-test.c)
+
+### 6.5 Stress Tests
+
+1. Buffer overflow
+    1. A few standard library functions are vulnerable to some security attacks using big or illegal inputs that overwrite precious data
+    1. For instance, standard library function _gets_ provides no way to limit the size of an input line, so it should **never** be used; always use _fgets(buf, sizeof(buf), stdin)_ instead
+    1. scanf("%s", buf) doesn't limit the length of an input line either, use scanf("%20s", buf) instead
+1. Any routine that might receive values from outside the program, directly or indirectly, should validate its input values before using them
+1. Good tedt cases can often be used on a variety of programs. For example, any program that reads files should be tested on an empty file. Any program that reads text should be tested on binary files. Any program that reads text lines should be tested on huge lines and empty lines and input with no newlines at all.
