@@ -465,3 +465,20 @@ O(2^n) | exponential | set partitioning
     1. scanf("%s", buf) doesn't limit the length of an input line either, use scanf("%20s", buf) instead
 1. Any routine that might receive values from outside the program, directly or indirectly, should validate its input values before using them
 1. Good tedt cases can often be used on a variety of programs. For example, any program that reads files should be tested on an empty file. Any program that reads text should be tested on binary files. Any program that reads text lines should be tested on huge lines and empty lines and input with no newlines at all.
+
+### 6.6 Tips for Testing
+
+1. To exercise the array bounds checks, temporarily make the array sizes very small, which is easier than creating large test cases
+1. Make the hash function return a constant, so every element gets installed in the same hash bucket
+1. Write a version of your storage allocator that intentionally fails early, to test your code for recovering from out-of-memory errors
+1. Initialize arrays and variables with some distinctive value, rather than the usual default of zero; then if you access out of bounds or pick up an uninitialized variable, you are more likely to notice it. The constant 0xDEADBEEF is easy to recognize in a debugger
+
+### 6.7 Who Does the Testing
+
+1. Boundary conditions are a good place to begin black box testing; high-volume, perverse, and illegal inputs are good follow-ons
+
+### 6.8 Testing the Markov Program
+
+### 6.9 Summary
+
+1. The single most important rule of testing is to _do it_
