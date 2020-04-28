@@ -482,3 +482,16 @@ O(2^n) | exponential | set partitioning
 ### 6.9 Summary
 
 1. The single most important rule of testing is to _do it_
+
+## Chapter 7: Performance
+
+1. A fast program that gets the wrong answer doesn't save any time.
+1. The first principle of optimization is _don't_
+
+### 7.1 A Bottleneck
+
+1. When solving problems, it's important to ask the right question
+1. Trading space for time, precomputation
+1. Use profiling and other techniques to study the behavior and learn where the problem really lay
+1. Make sure solving the right problem, examining the overall program rather than just focusing on some point
+1. Using a better algorithm solve the problem and check it's really faster, don't over-engineer
