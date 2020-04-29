@@ -495,3 +495,14 @@ O(2^n) | exponential | set partitioning
 1. Use profiling and other techniques to study the behavior and learn where the problem really lay
 1. Make sure solving the right problem, examining the overall program rather than just focusing on some point
 1. Using a better algorithm solve the problem and check it's really faster, don't over-engineer
+
+### 7.2 Timing and Profiling
+
+1. Automate timing measurements
+    1. Unix command _time_
+1. Use a profiler
+    1. A _profile_ is a measurement of where a program spends its time
+    1. Profiling is an effective tool for finding _hot spots_ in a program, the functions or sections of code that consume most of the computing time
+    1. Don Knuth: "Less than 4 percent of a program generally accounts for more than half of its running time"
+1. Concentrate on the hot spots
+1. Draw a picture
