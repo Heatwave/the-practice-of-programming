@@ -59,13 +59,13 @@ int main()
 
     buildStructures();
 
-    // for (int i = 0; i < UCHAR_MAX; ++i)
-    // {
-    //     if (nstarting[i] > 0)
-    //         printf("nstarting[%d]: %d\n", i, nstarting[i]);
-    // }
-
     char *mesg = "buy! now!";
+    printf("'%s' is spam? %s\n", mesg, isspam(mesg) == 1 ? "yes" : "no");
+
+    mesg = "there are lots of pRetty girls, come on!";
+    printf("'%s' is spam? %s\n", mesg, isspam(mesg) == 1 ? "yes" : "no");
+
+    mesg = "TOP secret";
     printf("'%s' is spam? %s\n", mesg, isspam(mesg) == 1 ? "yes" : "no");
     return 0;
 }

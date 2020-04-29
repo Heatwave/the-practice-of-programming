@@ -4,8 +4,6 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "eprintf.h"
-
 #define NPAT 6      // existing patterns
 #define NSTART 1024 // max of patterns begin with the same two characters
 
