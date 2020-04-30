@@ -4,3 +4,4 @@
 production
 *.out
 *.dSYM
+*.vscode
