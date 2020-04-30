@@ -506,3 +506,52 @@ O(2^n) | exponential | set partitioning
     1. Don Knuth: "Less than 4 percent of a program generally accounts for more than half of its running time"
 1. Concentrate on the hot spots
 1. Draw a picture
+
+### 7.3 Strategies for Speed
+
+1. Before changing a program to make it faster, be certain that it really is too slow, and use timing tools and profilers to discover where the time is going
+1. Use a better algorithm or data structure
+1. Enable compiler optimizations
+1. Tune the code
+    1. for example, something do not need to recompute inner the loop if it is a fixed value; like array[c] and strlen(s)
+1. Don't optimize what doesn't matter
+    1. Make sure the code you're optimizing is where time is really spent
+
+### 7.4 Tuning the Code
+
+1. Compilers will do some optimization for you, and in fact you may impede their efforts by complicating the program. Whatever you try, _measure_ its effct to make sure it helps
+1. Collect common subexpressions
+    1. If an expensive computation appears multiple times, do it in only one place and remember the result
+1. Replace expensive operations by cheap ones
+1. Unroll or eliminate loops
+
+    ```c
+    for (i = 0; i < 3*n; i++)
+        a[i] = b[i] + c[i];
+    ```
+
+    becomes
+
+    ```c
+    for (i = 0; i < 3*n; i += 3)
+    {
+        a[i+0] = b[i+0] + c[i+0];
+        a[i+1] = b[i+1] + c[i+1];
+        a[i+2] = b[i+2] + c[i+2];
+    }
+    ```
+
+    1. Note that this works only if the length is a multiple of the step size
+    1. Otherwise additional code is needed to fix up the ends, which is a place for mistakes to creep in and for some of the efficiency to be lost again
+
+1. Cache frequently-used values
+1. Write a special-purpose allocator
+    1. The special-purpose allocator can fetch a big array of items and then hands them out one at a time as needed, and freed items are placed back in a _free list_ so they can be reused quickly
+1. Buffer input and output
+1. Handle special cases separately
+1. Precompute results
+    1. For example, the **ctype** functions like **isdigit** are almost always implemented by indexing into a table of bit flags rather than by evaluating a sequence of tests
+1. Use approximate values
+    1. single-precision floating-point arithmetic is often faster than double-precision, so use _float_ instead of _double_ to save time if _accuracy_ isn't an issue
+    1. The use of integer sin and cos routines is another example of using approximate values
+1. Rewrite in a lower-level language
