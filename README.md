@@ -555,3 +555,13 @@ O(2^n) | exponential | set partitioning
     1. single-precision floating-point arithmetic is often faster than double-precision, so use _float_ instead of _double_ to save time if _accuracy_ isn't an issue
     1. The use of integer sin and cos routines is another example of using approximate values
 1. Rewrite in a lower-level language
+
+### 7.5 Space Efficiency
+
+1. Save space by using the smallest possible data type
+1. Don't store what you can easily recompute
+    1. Store the common value or values implicitly or in a compact form, and spend more time and space on the remaining values. If the most common values are really common, this is a win
+
+### 7.6 Estimation
+
+### 7.7 Summary
