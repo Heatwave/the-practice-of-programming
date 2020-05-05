@@ -565,3 +565,14 @@ O(2^n) | exponential | set partitioning
 ### 7.6 Estimation
 
 ### 7.7 Summary
+
+## Chapter 8: Portability
+
+## Chapter 9: Notation
+
+### 9.1 Formatting Data
+
+1. _Little language_ are specialized notations for narrow domains. They not only provide a good interface but also help organize the program that implements them. The _printf_ control sequences are a good example
+1. ANSI C says that we can always store at least 8 bits in a _char_, 16 bits in a _short_, and 32 bits in a _long_
+1. The inherent repetitiveness of the code is a clue that notation can help
+1. [pack.c](pack.c)
