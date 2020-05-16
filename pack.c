@@ -13,8 +13,10 @@ typedef unsigned long ulong;
 
 #define PACK0 0x00
 #define PACK1 0x01
+#define PACK2 0x02
 #define PACK0_FORMAT "cscl"
 #define PACK1_FORMAT "csll"
+#define PACK2_FORMAT "cSLS"
 
 // pack: pack binary items into buf, return length
 int pack(uchar *buf, char *fmt, ...)
@@ -35,11 +37,13 @@ int pack(uchar *buf, char *fmt, ...)
             *bp++ = va_arg(args, int);
             break;
         case 's': // short
+        case 'S': // signed short
             s = va_arg(args, int);
             *bp++ = s >> 8;
             *bp++ = s;
             break;
         case 'l': // long
+        case 'L': // signed long
             l = va_arg(args, ulong);
             *bp++ = l >> 24;
             *bp++ = l >> 16;
@@ -74,14 +78,26 @@ int unpack(uchar *buf, char *fmt, ...)
             pc = va_arg(args, uchar *);
             *pc = *bp++;
             break;
-        case 's': // short
+        case 's': // unsigned short
             ps = va_arg(args, ushort *);
             *ps = *bp++ << 8;
             *ps |= *bp++;
             break;
-        case 'l': // long
+        case 'S': // signed short
+            ps = va_arg(args, ushort *);
+            *ps = ((signed char)*bp++) << 8;
+            *ps |= *bp++;
+            break;
+        case 'l': // unsigned long
             pl = va_arg(args, ulong *);
             *pl = *bp++ << 24;
+            *pl |= *bp++ << 16;
+            *pl |= *bp++ << 8;
+            *pl |= *bp++;
+            break;
+        case 'L': // signed long
+            pl = va_arg(args, ulong *);
+            *pl = ((signed char)*bp++) << 24;
             *pl |= *bp++ << 16;
             *pl |= *bp++ << 8;
             *pl |= *bp++;
@@ -142,6 +158,30 @@ int unpack_type1(int n, uchar *buf)
     return process_type1(count, dw1, dw2);
 }
 
+int process_type2(short count, long dw1, ushort us1)
+{
+    printf("process type2, count: %d, dw1: %ld, us1: %u\n", count, dw1, us1);
+    return 0;
+}
+
+int pack_type2(uchar *buf, short count, long dw1, ushort us1)
+{
+    return pack(buf, PACK2_FORMAT, PACK2, count, dw1, us1);
+}
+
+int unpack_type2(int n, uchar *buf)
+{
+    uchar c;
+    short count;
+    long dw1;
+    ushort us1;
+
+    if (unpack(buf, PACK2_FORMAT, &c, &count, &dw1, &us1) != n)
+        return -1;
+    assert(c == PACK2);
+    return process_type2(count, dw1, us1);
+}
+
 int readpacket(int network, uchar *buf, size_t bufsize)
 {
     if (network == 0)
@@ -152,14 +192,20 @@ int readpacket(int network, uchar *buf, size_t bufsize)
     {
         return pack_type1(buf, 4, 1234, 5678);
     }
+    else if (network == 2)
+    {
+        return pack_type2(buf, -1234, -854775807, 32767);
+    }
     else
     {
         return 0;
     }
 }
 
-int (*unpackfn[])(int, uchar *) = {unpack_type0,
-                                   unpack_type1};
+int (*unpackfn[])(int, uchar *) = {
+    unpack_type0,
+    unpack_type1,
+    unpack_type2};
 
 void receive(int network)
 {
