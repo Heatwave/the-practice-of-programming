@@ -2,6 +2,8 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
 
 #include "eprintf.h"
 
@@ -14,9 +16,11 @@ typedef unsigned long ulong;
 #define PACK0 0x00
 #define PACK1 0x01
 #define PACK2 0x02
+#define PACK3 0x03
 #define PACK0_FORMAT "cscl"
 #define PACK1_FORMAT "csll"
 #define PACK2_FORMAT "cSLS"
+#define PACK3_FORMAT "c4sll"
 
 // pack: pack binary items into buf, return length
 int pack(uchar *buf, char *fmt, ...)
@@ -26,6 +30,7 @@ int pack(uchar *buf, char *fmt, ...)
     uchar *bp;
     ushort s;
     ulong l;
+    int count = 0;
 
     bp = buf;
     va_start(args, fmt);
@@ -38,9 +43,23 @@ int pack(uchar *buf, char *fmt, ...)
             break;
         case 's': // short
         case 'S': // signed short
-            s = va_arg(args, int);
-            *bp++ = s >> 8;
-            *bp++ = s;
+            if (count > 0)
+            {
+                ushort *usp = va_arg(args, ushort *);
+                int tmp = count;
+                while (count > 0)
+                {
+                    *bp++ = *(usp + (tmp - count)) >> 8;
+                    *bp++ = *(usp + (tmp - count));
+                    count--;
+                }
+            }
+            else
+            {
+                s = va_arg(args, int);
+                *bp++ = s >> 8;
+                *bp++ = s;
+            }
             break;
         case 'l': // long
         case 'L': // signed long
@@ -51,8 +70,20 @@ int pack(uchar *buf, char *fmt, ...)
             *bp++ = l;
             break;
         default: // illegal type character
-            va_end(args);
-            return -1;
+            if (isdigit(*p))
+            {
+                count = atoi(p);
+
+                while (isdigit(*(p + 1)))
+                {
+                    p++;
+                }
+            }
+            else
+            {
+                va_end(args);
+                return -1;
+            }
         }
     }
     va_end(args);
@@ -67,6 +98,7 @@ int unpack(uchar *buf, char *fmt, ...)
     uchar *bp, *pc;
     ushort *ps;
     ulong *pl;
+    int count = 0;
 
     bp = buf;
     va_start(args, fmt);
@@ -80,8 +112,25 @@ int unpack(uchar *buf, char *fmt, ...)
             break;
         case 's': // unsigned short
             ps = va_arg(args, ushort *);
-            *ps = *bp++ << 8;
+            if (*(p) == 'S')
+                *ps = ((signed char)*bp++) << 8;
+            else
+                *ps = *bp++ << 8;
             *ps |= *bp++;
+            if (count > 0)
+            {
+                int tmp = count--;
+
+                while (count > 0)
+                {
+                    if (*(p) == 'S')
+                        *(ps + (tmp - count)) = ((signed char)*bp++) << 8;
+                    else
+                        *(ps + (tmp - count)) = *bp++ << 8;
+                    *(ps + (tmp - count)) |= *bp++;
+                    count--;
+                }
+            }
             break;
         case 'S': // signed short
             ps = va_arg(args, ushort *);
@@ -103,8 +152,20 @@ int unpack(uchar *buf, char *fmt, ...)
             *pl |= *bp++;
             break;
         default: // illegal type character
-            va_end(args);
-            return -1;
+            if (isdigit(*p))
+            {
+                count = atoi(p);
+
+                while (isdigit(*(p + 1)))
+                {
+                    p++;
+                }
+            }
+            else
+            {
+                va_end(args);
+                return -1;
+            }
         }
     }
     va_end(args);
@@ -182,6 +243,37 @@ int unpack_type2(int n, uchar *buf)
     return process_type2(count, dw1, us1);
 }
 
+int process_type3(ushort us1[4], ulong dw1, ulong dw2)
+{
+    printf("process type3, ");
+    printf("us1: ");
+
+    for (size_t i = 0; i < 4; i++)
+    {
+        printf("%u ", us1[i]);
+    }
+
+    printf(", dw1: %ld, dw2: %ld\n", dw1, dw2);
+    return 0;
+}
+
+int pack_type3(uchar *buf, ushort us1[4], ulong dw1, ulong dw2)
+{
+    return pack(buf, PACK3_FORMAT, PACK3, us1, dw1, dw2);
+}
+
+int unpack_type3(int n, uchar *buf)
+{
+    uchar c;
+    ushort us1[4];
+    ulong dw1, dw2;
+
+    if (unpack(buf, PACK3_FORMAT, &c, us1, &dw1, &dw2) != n)
+        return -1;
+    assert(c == PACK3);
+    return process_type3(us1, dw1, dw2);
+}
+
 int readpacket(int network, uchar *buf, size_t bufsize)
 {
     if (network == 0)
@@ -196,6 +288,11 @@ int readpacket(int network, uchar *buf, size_t bufsize)
     {
         return pack_type2(buf, -1234, -854775807, 32767);
     }
+    else if (network == 3)
+    {
+        ushort us1[4] = {1, 12, 123, 1234};
+        return pack_type3(buf, us1, 12345678, 12345678);
+    }
     else
     {
         return 0;
@@ -205,7 +302,8 @@ int readpacket(int network, uchar *buf, size_t bufsize)
 int (*unpackfn[])(int, uchar *) = {
     unpack_type0,
     unpack_type1,
-    unpack_type2};
+    unpack_type2,
+    unpack_type3};
 
 void receive(int network)
 {
