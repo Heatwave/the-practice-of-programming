@@ -576,3 +576,7 @@ O(2^n) | exponential | set partitioning
 1. ANSI C says that we can always store at least 8 bits in a _char_, 16 bits in a _short_, and 32 bits in a _long_
 1. The inherent repetitiveness of the code is a clue that notation can help
 1. [pack.c](pack.c)
+
+### 9.2 Regular Expressions
+
+1. [my-grep.c](my-grep.c)
