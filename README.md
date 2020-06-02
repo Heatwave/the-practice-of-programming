@@ -586,3 +586,4 @@ O(2^n) | exponential | set partitioning
 ### 9.4 Interpreters, Compilers, and Virtual Machines
 
 1. [compiler-v1.c](compiler-v1.c)
+1. [compiler-v2.c](compiler-v2.c)
