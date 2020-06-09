@@ -587,3 +587,10 @@ O(2^n) | exponential | set partitioning
 
 1. [compiler-v1.c](compiler-v1.c)
 1. [compiler-v2.c](compiler-v2.c)
+1. [compiler-v3.c](compiler-v3.c)
+
+### 9.5 Programs that Write Programs
+
+### 9.6 Using Macros to Generate Code
+
+1. [macros-loop.c](macros-loop.c)
