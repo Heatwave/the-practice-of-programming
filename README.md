@@ -594,3 +594,12 @@ O(2^n) | exponential | set partitioning
 ### 9.6 Using Macros to Generate Code
 
 1. [macros-loop.c](macros-loop.c)
+
+## Epilogue
+
+1. Simplicity and clarity
+1. Generality
+1. Evolution
+1. Interfaces
+1. Automation
+1. Notation
